@@ -23,7 +23,6 @@ export class HeaderComponent implements OnInit {
     'November',
     'December',
   ];
-  public readonly hryvna = 'Hryvna';
 
   public currency$ = this.currencyService.currency$;
   public currentDate: string = '';
