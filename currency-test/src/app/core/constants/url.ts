@@ -1,3 +1,3 @@
 export const url = {
-  pbApi: 'https://api.monobank.ua/bank/currency',
+ monoApi: 'https://api.monobank.ua/bank/currency',
 };

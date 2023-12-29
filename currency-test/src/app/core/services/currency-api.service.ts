@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, interval, switchMap } from 'rxjs';
 import { url } from '../constants/url';
 
 @Injectable({
@@ -14,10 +14,16 @@ export class CurrencyApiService {
   private http = inject(HttpClient);
 
   public getCurrency(): void {
-    this.http.get(url.pbApi).subscribe((data) => {
+    this.http.get(url.monoApi).subscribe((data) => {
       this.currency.next(data);
       console.log(data);
     });
+  }
+
+  public startPeriodicUpdates(intervalTime: number): Observable<any> {
+    return interval(intervalTime).pipe(
+      switchMap(() => this.http.get(url.monoApi))
+    );
   }
 
   constructor() {
