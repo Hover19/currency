@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CurrencyApiService } from '../../core/services/currency-api.service';
-
+import { interval } from 'rxjs';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -23,17 +23,26 @@ export class HeaderComponent implements OnInit {
     'November',
     'December',
   ];
-  public readonly hryvna = 'Hryvna';
 
   public currency$ = this.currencyService.currency$;
-
-  public currentDate = `${new Date().getDate()} ${
-    this.monthNames[new Date().getMonth()]
-  }, ${new Date().getFullYear()}`;
+  public currentDate: string = '';
 
   ngOnInit() {
+    this.updateDate();
+
+    interval(3600000).subscribe(() => {
+      this.updateDate();
+    });
+
     this.currencyService.startPeriodicUpdates(600000).subscribe((data) => {
       console.log('Updated data:', data);
     });
+  }
+
+  private updateDate(): void {
+    const currentDate = new Date();
+    this.currentDate = `${currentDate.getDate()} ${
+      this.monthNames[currentDate.getMonth()]
+    }, ${currentDate.getFullYear()}`;
   }
 }
