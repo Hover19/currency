@@ -1,1 +1,19 @@
-<p>header works!</p>
+<ng-container *ngIf="currency$ | async as currency">
+  <div class="header">
+    <h1>Current exchange rate: {{ currentDate }}</h1>
+    <div class="header__inner">
+      <div class="currency-item">
+        <svg-icon src="assets/icons/usd-icon.svg"></svg-icon>
+        <h2>
+          {{ currency[0]?.rateBuy | currency : "UAH " : "symbol" : "2.2-2" }}
+        </h2>
+      </div>
+      <div class="currency-item">
+        <svg-icon src="assets/icons/euro-icon.svg"></svg-icon>
+        <h2>
+          {{ currency[1]?.rateBuy | currency : "UAH " : "symbol" : "2.2-2" }}
+        </h2>
+      </div>
+    </div>
+  </div>
+</ng-container>
