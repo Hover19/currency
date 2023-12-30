@@ -28,7 +28,6 @@ export class MainBlockComponent implements OnInit {
       this.currencyArray[0].currencyCodeA = 'USD';
       this.currencyArray[1].currencyCodeA = 'EUR';
       this.currencyArray.push({ currencyCodeA: 'UAH', rateBuy: 1 });
-      console.log(this.currencyArray);
     });
   }
 
@@ -41,7 +40,7 @@ export class MainBlockComponent implements OnInit {
         (currency: any) => currency.currencyCodeA === this.toCurrency
       )?.rateBuy;
 
-      if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
+      if (fromCurrencyRate && toCurrencyRate) {
         this.convertedAmount = Number(
           ((this.amount || 0) * (fromCurrencyRate / toCurrencyRate)).toFixed(2)
         );
@@ -56,7 +55,7 @@ export class MainBlockComponent implements OnInit {
         (currency: any) => currency.currencyCodeA === this.toCurrency
       )?.rateBuy;
 
-      if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
+      if (fromCurrencyRate && toCurrencyRate) {
         this.amount = Number(
           (
             (this.convertedAmount || 0) *
@@ -67,11 +66,7 @@ export class MainBlockComponent implements OnInit {
         console.error('Invalid currency codes');
       }
     } else {
-      if (
-        this.amount !== undefined &&
-        this.fromCurrency !== undefined &&
-        this.toCurrency !== undefined
-      ) {
+      if (this.amount && this.fromCurrency && this.toCurrency) {
         const fromCurrencyRate = this.currencyArray.find(
           (currency: any) => currency.currencyCodeA === this.fromCurrency
         )?.rateBuy;
@@ -79,7 +74,7 @@ export class MainBlockComponent implements OnInit {
           (currency: any) => currency.currencyCodeA === this.toCurrency
         )?.rateBuy;
 
-        if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
+        if (fromCurrencyRate && toCurrencyRate) {
           this.convertedAmount = Number(
             ((this.amount * fromCurrencyRate) / toCurrencyRate).toFixed(2)
           );
