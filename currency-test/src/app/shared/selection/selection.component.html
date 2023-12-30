@@ -1,1 +1,8 @@
-<p>selection works!</p>
+<div class="selection">
+  <label [for]="forLabel">{{ labelText }}</label>
+  <select [id]="id" [(ngModel)]="valueNg" (change)="onSelectionChange()">
+    <option *ngFor="let option of options" [value]="option.currencyCodeA">
+      {{ option.currencyCodeA }}
+    </option>
+  </select>
+</div>

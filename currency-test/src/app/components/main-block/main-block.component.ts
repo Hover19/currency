@@ -13,6 +13,8 @@ export class MainBlockComponent implements OnInit {
   public readonly amountTitle = 'Amount:';
   public readonly toCurrencyTitle = 'To currency:';
   public readonly convertedAmountTitle = 'Converted amount';
+  public readonly fromCurrencyId = 'fromCurrency';
+  public readonly toCurrencyId = 'toCurrency';
 
   public currencyArray: any = [];
   public amount: number | undefined;
@@ -31,7 +33,7 @@ export class MainBlockComponent implements OnInit {
     });
   }
 
-  convertCurrency(direction?: 'from' | 'to'): void {
+  convertCurrency(_event?: any, direction?: 'from' | 'to'): void {
     if (direction === 'from') {
       const fromCurrencyRate = this.currencyArray.find(
         (currency: any) => currency.currencyCodeA === this.fromCurrency
