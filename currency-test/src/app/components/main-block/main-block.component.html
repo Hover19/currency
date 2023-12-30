@@ -1,20 +1,13 @@
 <div class="main-block">
   <div class="currency-block">
-    <div class="currency-item">
-      <label for="fromCurrency">{{ fromCurrencyTitle }}</label>
-      <select
-        id="fromCurrency"
-        [(ngModel)]="fromCurrency"
-        (change)="convertCurrency()"
-      >
-        <option
-          *ngFor="let currency of currencyArray"
-          [value]="currency.currencyCodeA"
-        >
-          {{ currency.currencyCodeA }}
-        </option>
-      </select>
-    </div>
+    <app-selection
+      [forLabel]="fromCurrencyId"
+      [id]="fromCurrencyId"
+      [labelText]="fromCurrencyTitle"
+      [(valueNg)]="fromCurrency"
+      [options]="currencyArray"
+      (valueNgChange)="convertCurrency()"
+    ></app-selection>
     <div class="currency-item">
       <label for="amount">{{ amountTitle }}</label>
       <input
@@ -32,21 +25,14 @@
   </a>
 
   <div class="currency-block">
-    <div class="currency-item">
-      <label for="toCurrency">{{ toCurrencyTitle }}</label>
-      <select
-        id="toCurrency"
-        [(ngModel)]="toCurrency"
-        (change)="convertCurrency()"
-      >
-        <option
-          *ngFor="let currency of currencyArray"
-          [value]="currency.currencyCodeA"
-        >
-          {{ currency.currencyCodeA }}
-        </option>
-      </select>
-    </div>
+    <app-selection
+      [forLabel]="toCurrencyId"
+      [id]="toCurrencyId"
+      [labelText]="toCurrencyTitle"
+      [(valueNg)]="toCurrency"
+      [options]="currencyArray"
+      (valueNgChange)="convertCurrency('to')"
+    ></app-selection>
     <div class="currency-item">
       <label for="convertedAmount">{{ convertedAmountTitle }}</label>
       <input

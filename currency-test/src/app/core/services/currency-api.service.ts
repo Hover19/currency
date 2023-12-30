@@ -16,6 +16,7 @@ export class CurrencyApiService {
   public getCurrency(): void {
     this.http.get(url.monoApi).subscribe((data) => {
       this.currency.next(data);
+      console.log(data);
     });
   }
 
