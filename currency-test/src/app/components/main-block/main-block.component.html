@@ -1,43 +1,61 @@
-<div>
-  <label for="fromCurrency">From Currency:</label>
-  <select
-    id="fromCurrency"
-    [(ngModel)]="fromCurrency"
-    (change)="convertCurrency()"
-  >
-    <option
-      *ngFor="let currency of currencyArray"
-      [value]="currency.currencyCodeA"
-    >
-      {{ currency.currencyCodeA }}
-    </option>
-  </select>
-  <label for="amount">Amount:</label>
-  <input
-    type="number"
-    id="amount"
-    [(ngModel)]="amount"
-    (input)="convertCurrency('from')"
-    pattern="[0-9]*"
-  />
-</div>
+<div class="main-block">
+  <div class="currency-block">
+    <div class="currency-item">
+      <label for="fromCurrency">{{ fromCurrencyTitle }}</label>
+      <select
+        id="fromCurrency"
+        [(ngModel)]="fromCurrency"
+        (change)="convertCurrency()"
+      >
+        <option
+          *ngFor="let currency of currencyArray"
+          [value]="currency.currencyCodeA"
+        >
+          {{ currency.currencyCodeA }}
+        </option>
+      </select>
+    </div>
+    <div class="currency-item">
+      <label for="amount">{{ amountTitle }}</label>
+      <input
+        placeholder="Type an amount"
+        type="number"
+        id="amount"
+        [(ngModel)]="amount"
+        (input)="convertCurrency('from')"
+        pattern="[0-9]*"
+      />
+    </div>
+  </div>
+  <a (click)="toggleActiveOptions()">
+    <svg-icon src="assets/icons/replace.svg"></svg-icon>
+  </a>
 
-<div>
-  <label for="toCurrency">To Currency:</label>
-  <select id="toCurrency" [(ngModel)]="toCurrency" (change)="convertCurrency()">
-    <option
-      *ngFor="let currency of currencyArray"
-      [value]="currency.currencyCodeA"
-    >
-      {{ currency.currencyCodeA }}
-    </option>
-  </select>
-  <label for="convertedAmount">Converted Amount:</label>
-  <input
-    type="number"
-    id="convertedAmount"
-    [(ngModel)]="convertedAmount"
-    (input)="convertCurrency('to')"
-    pattern="[0-9]*"
-  />
+  <div class="currency-block">
+    <div class="currency-item">
+      <label for="toCurrency">{{ toCurrencyTitle }}</label>
+      <select
+        id="toCurrency"
+        [(ngModel)]="toCurrency"
+        (change)="convertCurrency()"
+      >
+        <option
+          *ngFor="let currency of currencyArray"
+          [value]="currency.currencyCodeA"
+        >
+          {{ currency.currencyCodeA }}
+        </option>
+      </select>
+    </div>
+    <div class="currency-item">
+      <label for="convertedAmount">{{ convertedAmountTitle }}</label>
+      <input
+        type="number"
+        id="convertedAmount"
+        [(ngModel)]="convertedAmount"
+        (input)="convertCurrency('to')"
+        pattern="[0-9]*"
+      />
+    </div>
+  </div>
 </div>
