@@ -1,13 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  BehaviorSubject,
-  Observable,
-  interval,
-  pipe,
-  switchMap,
-  map,
-} from 'rxjs';
+import { BehaviorSubject, Observable, interval, switchMap } from 'rxjs';
 import { url } from '../constants/url';
 
 @Injectable({

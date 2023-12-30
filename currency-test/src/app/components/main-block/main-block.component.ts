@@ -9,11 +9,17 @@ import { CurrencyApiService } from '../../core/services/currency-api.service';
 export class MainBlockComponent implements OnInit {
   private currencyService = inject(CurrencyApiService);
 
+  public readonly fromCurrencyTitle = 'From currency:';
+  public readonly amountTitle = 'Amount:';
+  public readonly toCurrencyTitle = 'To currency:';
+  public readonly convertedAmountTitle = 'Converted amount';
+
   public currencyArray: any = [];
   public amount: number | undefined;
-  public fromCurrency: string | undefined;
-  public toCurrency: string | undefined;
+  public fromCurrency: string = 'USD';
+  public toCurrency: string = 'UAH';
   public convertedAmount: number | undefined;
+  public activeSelect: 'from' | 'to' = 'from';
 
   ngOnInit(): void {
     this.currencyService.getCurrency();
@@ -22,35 +28,41 @@ export class MainBlockComponent implements OnInit {
       this.currencyArray[0].currencyCodeA = 'USD';
       this.currencyArray[1].currencyCodeA = 'EUR';
       this.currencyArray.push({ currencyCodeA: 'UAH', rateBuy: 1 });
+      console.log(this.currencyArray);
     });
   }
 
   convertCurrency(direction?: 'from' | 'to'): void {
     if (direction === 'from') {
       const fromCurrencyRate = this.currencyArray.find(
-        (c: any) => c.currencyCodeA === this.fromCurrency
+        (currency: any) => currency.currencyCodeA === this.fromCurrency
       )?.rateBuy;
       const toCurrencyRate = this.currencyArray.find(
-        (c: any) => c.currencyCodeA === this.toCurrency
+        (currency: any) => currency.currencyCodeA === this.toCurrency
       )?.rateBuy;
 
       if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
-        this.convertedAmount =
-          (this.amount || 0) * (fromCurrencyRate / toCurrencyRate);
+        this.convertedAmount = Number(
+          ((this.amount || 0) * (fromCurrencyRate / toCurrencyRate)).toFixed(2)
+        );
       } else {
         console.error('Invalid currency codes');
       }
     } else if (direction === 'to') {
       const fromCurrencyRate = this.currencyArray.find(
-        (c: any) => c.currencyCodeA === this.fromCurrency
+        (currency: any) => currency.currencyCodeA === this.fromCurrency
       )?.rateBuy;
       const toCurrencyRate = this.currencyArray.find(
-        (c: any) => c.currencyCodeA === this.toCurrency
+        (currency: any) => currency.currencyCodeA === this.toCurrency
       )?.rateBuy;
 
       if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
-        this.amount =
-          (this.convertedAmount || 0) * (toCurrencyRate / fromCurrencyRate);
+        this.amount = Number(
+          (
+            (this.convertedAmount || 0) *
+            (toCurrencyRate / fromCurrencyRate)
+          ).toFixed(2)
+        );
       } else {
         console.error('Invalid currency codes');
       }
@@ -61,19 +73,32 @@ export class MainBlockComponent implements OnInit {
         this.toCurrency !== undefined
       ) {
         const fromCurrencyRate = this.currencyArray.find(
-          (c: any) => c.currencyCodeA === this.fromCurrency
+          (currency: any) => currency.currencyCodeA === this.fromCurrency
         )?.rateBuy;
         const toCurrencyRate = this.currencyArray.find(
-          (c: any) => c.currencyCodeA === this.toCurrency
+          (currency: any) => currency.currencyCodeA === this.toCurrency
         )?.rateBuy;
 
         if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
-          this.convertedAmount =
-            (this.amount * fromCurrencyRate) / toCurrencyRate;
+          this.convertedAmount = Number(
+            ((this.amount * fromCurrencyRate) / toCurrencyRate).toFixed(2)
+          );
         } else {
           console.error('Invalid currency codes');
         }
       }
+    }
+  }
+
+  public toggleActiveOptions(): void {
+    [this.fromCurrency, this.toCurrency] = [this.toCurrency, this.fromCurrency];
+
+    [this.amount, this.convertedAmount] = [this.convertedAmount, this.amount];
+
+    if (this.activeSelect === 'from') {
+      this.convertCurrency('from');
+    } else {
+      this.convertCurrency('to');
     }
   }
 }

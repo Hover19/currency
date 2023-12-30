@@ -1,0 +1,51 @@
+.main-block {
+  margin-top: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+
+  a {
+    color: black;
+    cursor: pointer;
+  }
+
+  a:hover {
+    color: gray;
+  }
+
+  .currency-block {
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 25px;
+    width: 400px;
+    height: 200px;
+    border-radius: 8px;
+    background: gray;
+
+    .currency-item {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        color: rgb(245, 234, 234);
+        font-size: large;
+        font-weight: bold;
+      }
+
+      select,
+      input {
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 8px;
+        background-color: rgb(245, 234, 234);
+      }
+
+      input:focus-visible {
+        border: 1px solid black;
+      }
+    }
+  }
+}
