@@ -1,13 +1,15 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CurrencyApiService } from '../../core/services/currency-api.service';
-
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-main-block',
   templateUrl: './main-block.component.html',
   styleUrl: './main-block.component.scss',
 })
-export class MainBlockComponent implements OnInit {
+export class MainBlockComponent implements OnInit, OnDestroy {
   private currencyService = inject(CurrencyApiService);
+
+  private destroy$ = new Subject<void>();
 
   public readonly fromCurrencyTitle = 'From currency:';
   public readonly amountTitle = 'Amount:';
@@ -23,17 +25,24 @@ export class MainBlockComponent implements OnInit {
   public convertedAmount: number | undefined;
   public activeSelect: 'from' | 'to' = 'from';
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.currencyService.getCurrency();
-    this.currencyService.currency$.subscribe((data) => {
-      this.currencyArray = data.slice(0, 2);
-      this.currencyArray[0].currencyCodeA = 'USD';
-      this.currencyArray[1].currencyCodeA = 'EUR';
-      this.currencyArray.push({ currencyCodeA: 'UAH', rateBuy: 1 });
-    });
+    this.currencyService.currency$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.currencyArray = data.slice(0, 2);
+        this.currencyArray[0].currencyCodeA = 'USD';
+        this.currencyArray[1].currencyCodeA = 'EUR';
+        this.currencyArray.push({ currencyCodeA: 'UAH', rateBuy: 1 });
+      });
   }
 
-  convertCurrency(_event?: any, direction?: 'from' | 'to'): void {
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  public convertCurrency(_event?: any, direction?: 'from' | 'to'): void {
     if (direction === 'from') {
       const fromCurrencyRate = this.currencyArray.find(
         (currency: any) => currency.currencyCodeA === this.fromCurrency

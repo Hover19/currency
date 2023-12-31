@@ -1,13 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CurrencyApiService } from '../../core/services/currency-api.service';
-import { interval } from 'rxjs';
+import { interval, takeUntil, Subject } from 'rxjs';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   private currencyService = inject(CurrencyApiService);
+
+  private destroy$ = new Subject<void>();
 
   public readonly monthNames = [
     'January',
@@ -27,16 +29,19 @@ export class HeaderComponent implements OnInit {
   public currency$ = this.currencyService.currency$;
   public currentDate: string = '';
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.updateDate();
 
-    interval(3600000).subscribe(() => {
-      this.updateDate();
-    });
+    interval(3600000)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateDate();
+      });
+  }
 
-    this.currencyService.startPeriodicUpdates(600000).subscribe((data) => {
-      console.log('Updated data:', data);
-    });
+  public ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private updateDate(): void {

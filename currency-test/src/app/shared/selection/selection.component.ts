@@ -10,12 +10,12 @@ export class SelectionComponent {
   @Input() public id: string;
   @Input() public forLabel: string;
   @Input() public valueNg: string;
-  @Input() public options: [CurrencyData];
+  @Input() public options: CurrencyData[];
   @Input() public labelText: string;
 
   @Output() public valueNgChange = new EventEmitter<string>();
 
-  onSelectionChange() {
+  public onSelectionChange(): void {
     this.valueNgChange.emit(this.valueNg);
   }
 }
